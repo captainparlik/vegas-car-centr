@@ -20,7 +20,7 @@
             </column>
         </createTable>
 
-        <addForeignKeyConstraint baseTableName="booking" baseColumnNames="services_ID"
+        <addForeignKeyConstraint baseTableName="booking" baseColumnNames="services_id"
                                  constraintName="fk_booking_service_id"
                                  referencedTableName="service"
                                  referencedColumnNames="id"/>

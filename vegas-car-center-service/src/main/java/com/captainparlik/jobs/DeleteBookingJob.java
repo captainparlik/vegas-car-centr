@@ -1,14 +1,10 @@
 package com.captainparlik.jobs;
 
-import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Map;
 
-import com.captainparlik.config.ScheduledJob;
 import com.captainparlik.model.entity.Booking;
 import com.captainparlik.repositories.BookingRepository;
 import lombok.RequiredArgsConstructor;
-import org.quartz.JobDetail;
 import org.springframework.stereotype.Component;
 
 @Component

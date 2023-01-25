@@ -1,4 +1,4 @@
-package com.captainparlik.config;
+package com.captainparlik.jobs;
 
 import java.util.Map;
 
