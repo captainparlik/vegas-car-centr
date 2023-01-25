@@ -12,7 +12,7 @@ services:
 
   db:
     image: postgres:latest
-    container_name: crypto-blog-postgres
+    container_name: vegas-car-center-postgres
     restart: always
     ports:
       - "5432:5432"

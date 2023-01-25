@@ -3,12 +3,16 @@ package com.captainparlik.service;
 import static com.captainparlik.exceptions.ErrorRegistry.BOOKING_NOT_FOUND;
 
 import java.util.List;
+import java.util.Objects;
 
+import javax.transaction.Transactional;
 
 import com.captainparlik.exceptions.IllegalBookingException;
+import com.captainparlik.jobs.DeleteBookingJobScheduler;
 import com.captainparlik.model.entity.Booking;
 import com.captainparlik.repositories.BookingRepository;
 import lombok.RequiredArgsConstructor;
+import org.quartz.SchedulerException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,19 +20,23 @@ import org.springframework.stereotype.Service;
 public class BookingService {
 
     private final BookingRepository bookingRepository;
+    private final DeleteBookingJobScheduler deleteBookingJobScheduler;
 
-    public Booking book(Booking booking) {
-        if (bookingRepository.existsById(booking.getId())) {
+    @Transactional
+    public Booking book(Booking booking) throws SchedulerException {
+        if (Objects.nonNull(booking.getId())) {
             throw new IllegalBookingException(BOOKING_NOT_FOUND);
         }
-        return bookingRepository.save(booking);
+        bookingRepository.save(booking);
+        deleteBookingJobScheduler.scheduleDeletion(booking);
+        return booking;
     }
 
-    public void deleteBooking(Booking booking) {
-        if (bookingRepository.existsById(booking.getId())) {
+    public void deleteBooking(Long id) {
+        if (!bookingRepository.existsById(id)) {
             throw new IllegalBookingException(BOOKING_NOT_FOUND);
         }
-        bookingRepository.delete(booking);
+        bookingRepository.deleteById(id);
     }
 
     public Booking changeBooking(Long bookingId, Booking booking) {

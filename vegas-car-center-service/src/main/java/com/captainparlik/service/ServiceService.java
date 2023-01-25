@@ -1,6 +1,7 @@
 package com.captainparlik.service;
 
-import static com.captainparlik.exceptions.ErrorRegistry.BOOKING_NOT_FOUND;
+
+import static com.captainparlik.exceptions.ErrorRegistry.SERVICE_NOT_FOUND;
 
 import java.util.List;
 
@@ -22,14 +23,14 @@ public class ServiceService {
 
     public Service addService(Service service) {
         if (!service.isActive()) {
-            throw new IllegalBookingException(BOOKING_NOT_FOUND);
+            throw new IllegalBookingException(SERVICE_NOT_FOUND);
         }
         return serviceRepository.save(service);
     }
 
     public Service updateService(Long id, Service service) {
         Service service1 = serviceRepository.findById(id)
-                                            .orElseThrow(() -> new IllegalBookingException(BOOKING_NOT_FOUND));
+                                            .orElseThrow(() -> new IllegalBookingException(SERVICE_NOT_FOUND));
         service1.setActive(service.isActive());
         return serviceRepository.save(service1);
     }
